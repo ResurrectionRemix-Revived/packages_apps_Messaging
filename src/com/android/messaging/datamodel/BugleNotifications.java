@@ -23,7 +23,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -874,12 +873,6 @@ public class BugleNotifications {
 
         final RemoteInput.Builder remoteInputBuilder = new RemoteInput.Builder(Intent.EXTRA_TEXT);
         remoteInputBuilder.setLabel(context.getString(R.string.notification_reply_prompt));
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WATCH)) {
-            final String[] choices = context.getResources().getStringArray(
-                    R.array.notification_reply_choices);
-            remoteInputBuilder.setChoices(choices);
-        }
-
         actionBuilder.addRemoteInput(remoteInputBuilder.build());
         notifBuilder.addAction(actionBuilder.build());
 
@@ -887,7 +880,15 @@ public class BugleNotifications {
         if (PrefsUtils.isNotificationReplyEnabled()) {
             notifBuilder.addAction(actionBuilder.build());
         }
-        wearableExtender.addAction(actionBuilder.build());
+
+        final NotificationCompat.Action.Builder wearActionBuilder =
+                new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply,
+                        context.getString(replyLabelRes), replyPendingIntent);
+        final String[] choices = context.getResources().getStringArray(
+                R.array.notification_reply_choices);
+        remoteInputBuilder.setChoices(choices);
+        wearActionBuilder.addRemoteInput(remoteInputBuilder.build());
+        wearableExtender.addAction(wearActionBuilder.build());
     }
 
     private static void addReadAction(final NotificationCompat.Builder notifBuilder,
