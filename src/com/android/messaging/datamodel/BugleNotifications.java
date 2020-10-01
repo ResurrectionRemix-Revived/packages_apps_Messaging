@@ -863,22 +863,27 @@ public class BugleNotifications {
         final PendingIntent replyPendingIntent = UIIntents.get()
                 .getPendingIntentForSendingMessageToConversation(context,
                         conversationId, selfId, requiresMms, requestCode);
+        final PendingIntent dissmissIntent = multiMessageNotificationState.getClearIntent();
 
         final int replyLabelRes = requiresMms ? R.string.notification_reply_via_mms :
             R.string.notification_reply_via_sms;
+        final int dissmissRes = R.string.read_later_button;
 
         final NotificationCompat.Action.Builder actionBuilder =
                 new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply,
                         context.getString(replyLabelRes), replyPendingIntent);
+
+        final NotificationCompat.Action.Builder dismissBuilder =
+                new NotificationCompat.Action.Builder(R.drawable.ic_delete_small,
+                        context.getString(dissmissRes), dissmissIntent);
 
         final RemoteInput.Builder remoteInputBuilder = new RemoteInput.Builder(Intent.EXTRA_TEXT);
         remoteInputBuilder.setLabel(context.getString(R.string.notification_reply_prompt));
         actionBuilder.addRemoteInput(remoteInputBuilder.build());
         notifBuilder.addAction(actionBuilder.build());
 
-        // Support the action on a wearable device as well
         if (PrefsUtils.isNotificationReplyEnabled()) {
-            notifBuilder.addAction(actionBuilder.build());
+            notifBuilder.addAction(dismissBuilder.build());
         }
 
         final NotificationCompat.Action.Builder wearActionBuilder =
