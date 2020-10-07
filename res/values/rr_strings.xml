@@ -2,4 +2,7 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="system_body_font" translatable="false">@*android:string/config_bodyFontFamily</string>
+
+    <!-- Button to read message later. -->
+    <string name="read_later_button">Dismiss &amp; read later</string>
 </resources>

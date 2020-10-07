@@ -281,9 +281,6 @@
     <!-- Alert dialog decline deleting this conversation button. -->
     <string name="delete_conversation_decline_button">Cancel</string>
 
-    <!-- Button to read message later. -->
-    <string name="read_later_button">Dismiss &amp; Read later</string>
-
     <!-- Hint text for the recipient chips text box when it's empty -->
     <string name="recipient_hint">To</string>
     <!-- Action menu title for multiple selection in gallery image picker -->
